@@ -37,15 +37,8 @@ LabelCell.propTypes = {
     ]).isRequired,
 };
 
-// A horizontal label annotating the cell makeup of a row
-class RowLabel extends Component {
+class Label extends Component {
     render() {
-        const style = {
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "flex-end",
-        };
-
         const contents = (this.props.label.length === 0) ?
             <LabelCell value={" "} /> :
 
@@ -53,27 +46,37 @@ class RowLabel extends Component {
                 return <LabelCell value={cell} key={i} />;
             });
 
-        return <div style={style}>
+        return <div style={this.props.style}>
             {contents}
         </div>
     }
 };
-RowLabel.propTypes = {
+Label.propTypes = {
     label: types.label.isRequired,
+    style: React.PropTypes.object,
 };
+
 
 // A list of row labels from top to bottom
 class RowLabels extends Component {
     render() {
-        const style = {
-            width: styleConstants.labelContainerSize,
+        const styles = {
+            container: {
+                width: styleConstants.labelContainerSize,
+            },
+
+            label: {
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "flex-end",
+            },
         };
 
         const labels = this.props.labels.map((label, i) => {
-            return <RowLabel label={label} key={i} />;
+            return <Label label={label} style={styles.label} key={i} />;
         });
 
-        return <div style={style}>
+        return <div style={styles.container}>
             {labels}
         </div>;
     }
@@ -82,46 +85,28 @@ RowLabels.propTypes = {
     labels: types.labelList.isRequired,
 };
 
-
-// A vertical label annotating the cell makeup of a row
-class ColumnLabel extends Component {
-    render() {
-        const style = {
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "flex-end",
-        };
-
-        const contents = (this.props.label.length === 0) ?
-            <LabelCell value={" "} /> :
-
-            this.props.label.map((cell, i) => {
-                return <LabelCell value={cell} key={i} />;
-            });
-
-        return <div style={style}>
-            {contents}
-        </div>
-    }
-};
-ColumnLabel.propTypes = {
-    label: types.label.isRequired,
-};
-
 // A list of row labels from top to bottom
 class ColumnLabels extends Component {
     render() {
-        const style = {
-            height: styleConstants.labelContainerSize,
-            display: "flex",
-            justifyContent: "flex-start",
+        const styles = {
+            container: {
+                height: styleConstants.labelContainerSize,
+                display: "flex",
+                justifyContent: "flex-start",
+            },
+
+            label: {
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "flex-end",
+            },
         };
 
         const labels = this.props.labels.map((label, i) => {
-            return <ColumnLabel label={label} key={i} />;
+            return <Label label={label} key={i} style={styles.label} />;
         });
 
-        return <div style={style}>
+        return <div style={styles.container}>
             {labels}
         </div>;
     }
