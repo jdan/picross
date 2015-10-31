@@ -1,16 +1,10 @@
-import React, { Component } from "react";
-import types from "./prop-types";
+import React, { PropTypes, Component } from "react";
 
 const styleConstants = {
     cellWidth: 15,
     cellHeight: 15,
-
     labelContainerSize: 60,
-};
-
-const baseStyle = {
-    fontSize: 12,
-    fontFamily: "monospace",
+    black: "#000000",
 };
 
 class LabelCell extends Component {
@@ -20,7 +14,9 @@ class LabelCell extends Component {
             textAlign: "center",
             width: styleConstants.cellWidth,
             height: styleConstants.cellHeight,
-            ...baseStyle,
+            color: styleConstants.black,
+            fontSize: 12,
+            fontFamily: "monospace",
         };
 
         return <div style={style}>
@@ -29,11 +25,10 @@ class LabelCell extends Component {
     }
 }
 LabelCell.propTypes = {
-    value: React.PropTypes.oneOfType([
-        React.PropTypes.number,
-
+    value: PropTypes.oneOfType([
+        PropTypes.number,
         // Empty string
-        React.PropTypes.string,
+        PropTypes.string,
     ]).isRequired,
 };
 
@@ -52,8 +47,8 @@ class Label extends Component {
     }
 };
 Label.propTypes = {
-    label: types.label.isRequired,
-    style: React.PropTypes.object,
+    label: PropTypes.arrayOf(LabelCell.propTypes.value).isRequired,
+    style: PropTypes.object,
 };
 
 
@@ -82,7 +77,7 @@ class RowLabels extends Component {
     }
 }
 RowLabels.propTypes = {
-    labels: types.labelList.isRequired,
+    labels: PropTypes.arrayOf(Label.propTypes.label).isRequired,
 };
 
 // A list of row labels from top to bottom
@@ -112,14 +107,85 @@ class ColumnLabels extends Component {
     }
 }
 ColumnLabels.propTypes = {
-    labels: types.labelList.isRequired,
+    labels: PropTypes.arrayOf(Label.propTypes.label).isRequired,
+};
+
+
+class Row extends Component {
+    render() {
+        const styles = {
+            row: {
+                display: "flex",
+                flexDirection: "row",
+            },
+
+            cell: {
+                boxSizing: "border-box",
+
+                borderRightWidth: 1,
+                borderBottomWidth: 1,
+                borderRightColor: styleConstants.black,
+                borderBottomColor: styleConstants.black,
+                borderRightStyle: "solid",
+                borderBottomStyle: "solid",
+
+                width: styleConstants.cellWidth,
+                height: styleConstants.cellHeight,
+            },
+
+            cellFilled: {
+
+            },
+        };
+
+        const cells = this.props.row.map((cell, i) => {
+            // Colors?
+            return <div style={styles.cell} key={i} />;
+        });
+
+        return <div style={styles.row}>
+            {cells}
+        </div>;
+    }
+}
+Row.propTypes = {
+    row: PropTypes.arrayOf(PropTypes.number).isRequired,
+};
+
+
+class Grid extends Component {
+    render() {
+        const styles = {
+            grid: {
+                boxSizing: "border-box",
+
+                borderLeftWidth: 1,
+                borderTopWidth: 1,
+                borderLeftColor: styleConstants.black,
+                borderTopColor: styleConstants.black,
+                borderLeftStyle: "solid",
+                borderTopStyle: "solid",
+            },
+        };
+
+        const rows = this.props.grid.map((row, i) => {
+            return <Row row={row} key={i} />;
+        });
+
+        return <div style={styles.grid}>
+            {rows}
+        </div>;
+    }
+}
+Grid.propTypes = {
+    grid: PropTypes.arrayOf(Row.propTypes.row).isRequired,
 };
 
 
 export class Picross extends Component {
     render() {
         const styles = {
-            topRow: {
+            row: {
                 display: "flex",
             },
 
@@ -130,15 +196,22 @@ export class Picross extends Component {
         }
 
         return <div>
-            <div style={styles.topRow}>
+            <div style={styles.row}>
                 <div style={styles.spacer} />
                 <ColumnLabels labels={this.props.puzzle.columnLabels} />
             </div>
 
-            <RowLabels labels={this.props.puzzle.rowLabels} />
+            <div style={styles.row}>
+                <RowLabels labels={this.props.puzzle.rowLabels} />
+                <Grid grid={this.props.puzzle.grid} />
+            </div>
         </div>;
     }
 }
 Picross.propTypes = {
-    puzzle: types.puzzle.isRequired,
+    puzzle: PropTypes.shape({
+        columnLabels: ColumnLabels.propTypes.labels.isRequired,
+        rowLabels: RowLabels.propTypes.labels.isRequired,
+        grid: Grid.propTypes.grid.isRequired,
+    }).isRequired,
 };
