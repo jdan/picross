@@ -1,11 +1,11 @@
 import React, { PropTypes, Component } from "react";
 
 import { RowLabels, ColumnLabels } from "./Labels";
-import { Grid } from "./Grid";
+import Grid from "./Grid";
 import { styleConstants, fontStyles } from "./style-constants";
 
 
-export class Picross extends Component {
+export class App extends Component {
     render() {
         const styles = {
             row: {
@@ -31,7 +31,7 @@ export class Picross extends Component {
         </div>;
     }
 }
-Picross.propTypes = {
+App.propTypes = {
     puzzle: PropTypes.shape({
         columnLabels: ColumnLabels.propTypes.labels.isRequired,
         rowLabels: RowLabels.propTypes.labels.isRequired,

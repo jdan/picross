@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { styleConstants, fontStyles } from "./style-constants";
 
+
 class Cell extends Component {
     render() {
         const styles = {
@@ -70,7 +71,7 @@ Row.propTypes = {
 };
 
 
-export class Grid extends Component {
+export default class Grid extends Component {
     render() {
         const styles = {
             grid: {

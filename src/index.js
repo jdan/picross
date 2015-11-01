@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "react-dom";
-import { Picross } from "./Picross";
+import { App } from "./App";
 
 const examplePuzzle = {
     columnLabels: [[], [2]],
@@ -11,4 +11,4 @@ const examplePuzzle = {
     ],
 };
 
-render(<Picross puzzle={examplePuzzle} />, document.getElementById("root"));
+render(<App puzzle={examplePuzzle} />, document.getElementById("root"));
