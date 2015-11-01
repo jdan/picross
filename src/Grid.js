@@ -1,15 +1,54 @@
 import React, { Component, PropTypes } from "react";
+
 import { styleConstants, fontStyles } from "./style-constants";
+import { CellStates } from "./actions";
+
+const { FILLED, EMPTY, CHECKED } = CellStates;
 
 
 class Cell extends Component {
+    handleClick() {
+        const getNextState = () => {
+            // Checked cells stay checked
+            if (this.props.value === CHECKED) {
+                return CHECKED;
+            }
+
+            // Filled/empty cells toggle
+            if (this.props.value === FILLED) {
+                return EMPTY;
+            } else {
+                return FILLED;
+            }
+        };
+
+        this.props.onCellChange(getNextState());
+    }
+
+    handleDoubleClick() {
+        const getNextState = () => {
+            // Filled cells stay filled
+            if (this.props.value === FILLED) {
+                return FILLED;
+            }
+
+            // Checked/empty cells toggle
+            if (this.props.value === CHECKED) {
+                return EMPTY;
+            } else {
+                return CHECKED;
+            }
+        };
+
+        this.props.onCellChange(getNextState());
+    }
+
     render() {
         const styles = {
             cell: {
                 ...fontStyles,
 
                 boxSizing: "border-box",
-                color: styleConstants.white,
 
                 borderRightWidth: 1,
                 borderBottomWidth: 1,
@@ -22,11 +61,15 @@ class Cell extends Component {
                 height: styleConstants.cellHeight,
 
                 textAlign: "center",
+
+                userSelect: "none",
+                WebkitUserSelect: "none",
+                MozUserSelect: "none",
+                msUserSelect: "none",
             },
 
             cellFilled: {
                 backgroundColor: styleConstants.black,
-                color: styleConstants.black,
             },
 
             cellCrossed: {
@@ -36,17 +79,22 @@ class Cell extends Component {
 
         const style = {
             ...styles.cell,
-            ...(this.props.value === 1 && styles.cellFilled),
-            ...(this.props.value === 2 && styles.cellCrossed),
+            ...(this.props.value === FILLED && styles.cellFilled),
+            ...(this.props.value === CHECKED && styles.cellCrossed),
         }
 
-        return <div style={style}>
-            X
-        </div>;
+        return (
+            <div style={style}
+                 onClick={() => this.handleClick()}
+                 onDoubleClick={() => this.handleDoubleClick()}>
+                {(this.props.value === CHECKED) && "X"}
+            </div>
+        );
     }
 }
 Cell.propTypes = {
-    value: PropTypes.number.isRequired,
+    value: PropTypes.oneOf([FILLED, EMPTY, CHECKED]).isRequired,
+    onCellChange: PropTypes.func.isRequired,
 };
 
 
@@ -58,7 +106,11 @@ class Row extends Component {
         };
 
         const cells = this.props.row.map((cell, i) => {
-            return <Cell value={cell} key={i} />;
+            const onCellChange = (state) => {
+                this.props.onCellChange(i, state);
+            };
+
+            return <Cell value={cell} key={i} onCellChange={onCellChange} />;
         });
 
         return <div style={style}>
@@ -68,6 +120,7 @@ class Row extends Component {
 }
 Row.propTypes = {
     row: PropTypes.arrayOf(Cell.propTypes.value).isRequired,
+    onCellChange: PropTypes.func.isRequired,
 };
 
 
@@ -87,7 +140,11 @@ export default class Grid extends Component {
         };
 
         const rows = this.props.grid.map((row, i) => {
-            return <Row row={row} key={i} />;
+            const onCellChange = (column, state) => {
+                this.props.onCellChange(i, column, state);
+            };
+
+            return <Row row={row} key={i} onCellChange={onCellChange} />;
         });
 
         return <div style={styles.grid}>
@@ -97,4 +154,5 @@ export default class Grid extends Component {
 }
 Grid.propTypes = {
     grid: PropTypes.arrayOf(Row.propTypes.row).isRequired,
+    onCellChange: PropTypes.func.isRequired,
 };

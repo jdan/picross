@@ -5,13 +5,16 @@ import { Provider } from "react-redux";
 
 import App from "./App";
 import picrossApp from "./reducers";
+import { CellStates } from "./actions";
+
+const { EMPTY } = CellStates;
 
 const store = createStore(picrossApp, {
     columnLabels: [[], [2]],
     rowLabels: [[1], [1]],
     grid: [
-        [2, 1],
-        [0, 0],
+        [EMPTY, EMPTY,],
+        [EMPTY, EMPTY,],
     ],
 });
 

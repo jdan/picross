@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { RowLabels, ColumnLabels } from "./Labels";
 import Grid from "./Grid";
 import { styleConstants, fontStyles } from "./style-constants";
+import { setCellState } from "./actions";
 
 
 class App extends Component {
@@ -22,6 +23,10 @@ class App extends Component {
             },
         }
 
+        const onCellChange = (row, column, state) => {
+            dispatch(setCellState(row, column, state));
+        };
+
         return <div>
             <div style={styles.row}>
                 <div style={styles.spacer} />
@@ -30,7 +35,7 @@ class App extends Component {
 
             <div style={styles.row}>
                 <RowLabels labels={rowLabels} />
-                <Grid grid={grid} />
+                <Grid grid={grid} onCellChange={onCellChange} />
             </div>
         </div>;
     }
