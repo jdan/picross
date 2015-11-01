@@ -5,18 +5,24 @@ const styleConstants = {
     cellHeight: 15,
     labelContainerSize: 60,
     black: "#000000",
+    white: "#ffffff",
+    gray: "#777777",
+};
+
+const fontStyles = {
+    color: styleConstants.black,
+    fontSize: 12,
+    fontFamily: "monospace",
 };
 
 class LabelCell extends Component {
     render() {
         const style = {
+            ...fontStyles,
             boxSizing: "border-box",
             textAlign: "center",
             width: styleConstants.cellWidth,
             height: styleConstants.cellHeight,
-            color: styleConstants.black,
-            fontSize: 12,
-            fontFamily: "monospace",
         };
 
         return <div style={style}>
@@ -111,16 +117,14 @@ ColumnLabels.propTypes = {
 };
 
 
-class Row extends Component {
+class Cell extends Component {
     render() {
         const styles = {
-            row: {
-                display: "flex",
-                flexDirection: "row",
-            },
-
             cell: {
+                ...fontStyles,
+
                 boxSizing: "border-box",
+                color: styleConstants.white,
 
                 borderRightWidth: 1,
                 borderBottomWidth: 1,
@@ -131,25 +135,54 @@ class Row extends Component {
 
                 width: styleConstants.cellWidth,
                 height: styleConstants.cellHeight,
+
+                textAlign: "center",
             },
 
             cellFilled: {
+                backgroundColor: styleConstants.black,
+                color: styleConstants.black,
+            },
 
+            cellCrossed: {
+                color: styleConstants.gray,
             },
         };
 
+        const style = {
+            ...styles.cell,
+            ...(this.props.value === 1 && styles.cellFilled),
+            ...(this.props.value === 2 && styles.cellCrossed),
+        }
+
+        return <div style={style}>
+            X
+        </div>;
+    }
+}
+Cell.propTypes = {
+    value: PropTypes.number.isRequired,
+};
+
+
+class Row extends Component {
+    render() {
+        const style = {
+            display: "flex",
+            flexDirection: "row",
+        };
+
         const cells = this.props.row.map((cell, i) => {
-            // Colors?
-            return <div style={styles.cell} key={i} />;
+            return <Cell value={cell} key={i} />;
         });
 
-        return <div style={styles.row}>
+        return <div style={style}>
             {cells}
         </div>;
     }
 }
 Row.propTypes = {
-    row: PropTypes.arrayOf(PropTypes.number).isRequired,
+    row: PropTypes.arrayOf(Cell.propTypes.value).isRequired,
 };
 
 
