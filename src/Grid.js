@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import styleConstants, { fontStyles } from "./style-constants";
+import { styleConstants, fontStyles } from "./style-constants";
 
 class Cell extends Component {
     render() {
@@ -70,7 +70,7 @@ Row.propTypes = {
 };
 
 
-class Grid extends Component {
+export class Grid extends Component {
     render() {
         const styles = {
             grid: {
@@ -97,5 +97,3 @@ class Grid extends Component {
 Grid.propTypes = {
     grid: PropTypes.arrayOf(Row.propTypes.row).isRequired,
 };
-
-export default Grid;

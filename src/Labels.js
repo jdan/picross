@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import styleConstants, { fontStyles } from "./style-constants";
+import { styleConstants, fontStyles } from "./style-constants";
 
 class LabelCell extends Component {
     render() {

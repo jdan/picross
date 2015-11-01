@@ -1,8 +1,8 @@
 import React, { PropTypes, Component } from "react";
 
 import { RowLabels, ColumnLabels } from "./Labels";
-import Grid from "./Grid";
-import styleConstants, { fontStyles } from "./style-constants";
+import { Grid } from "./Grid";
+import { styleConstants, fontStyles } from "./style-constants";
 
 
 export class Picross extends Component {

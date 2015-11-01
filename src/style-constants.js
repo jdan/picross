@@ -1,4 +1,4 @@
-const styleConstants = {
+export const styleConstants = {
     cellWidth: 15,
     cellHeight: 15,
     labelContainerSize: 60,
@@ -7,7 +7,6 @@ const styleConstants = {
     gray: "#777777",
 };
 
-export default styleConstants;
 export const fontStyles = {
     color: styleConstants.black,
     fontSize: 12,
