@@ -17,9 +17,8 @@ class App extends Component {
                 display: "flex",
             },
 
-            spacer: {
-                width: styleConstants.labelContainerSize,
-                height: styleConstants.labelContainerSize,
+            topRow: {
+                justifyContent: "flex-end",
             },
         }
 
@@ -27,9 +26,8 @@ class App extends Component {
             dispatch(setCellState(row, column, state));
         };
 
-        return <div>
-            <div style={styles.row}>
-                <div style={styles.spacer} />
+        return <div style={{margin: "auto"}}>
+            <div style={{...styles.row, ...styles.topRow}}>
                 <ColumnLabels labels={columnLabels} />
             </div>
 

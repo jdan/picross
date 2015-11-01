@@ -1,7 +1,8 @@
+export const CELL_SIZE = 60;
+
 export const styleConstants = {
-    cellWidth: 15,
-    cellHeight: 15,
-    labelContainerSize: 60,
+    cellWidth: CELL_SIZE,
+    cellHeight: CELL_SIZE,
     black: "#000000",
     white: "#ffffff",
     gray: "#777777",
@@ -9,6 +10,6 @@ export const styleConstants = {
 
 export const fontStyles = {
     color: styleConstants.black,
-    fontSize: 12,
+    fontSize: CELL_SIZE * 0.8,
     fontFamily: "monospace",
 };

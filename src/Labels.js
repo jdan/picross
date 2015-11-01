@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { styleConstants, fontStyles } from "./style-constants";
+import { styleConstants, fontStyles, CELL_SIZE } from "./style-constants";
 
 
 class LabelCell extends Component {
@@ -50,7 +50,7 @@ class RowLabels extends Component {
     render() {
         const styles = {
             container: {
-                width: styleConstants.labelContainerSize,
+                width: this.props.labels.length * CELL_SIZE,
             },
 
             label: {
@@ -78,7 +78,7 @@ class ColumnLabels extends Component {
     render() {
         const styles = {
             container: {
-                height: styleConstants.labelContainerSize,
+                height: this.props.labels.length * CELL_SIZE,
                 display: "flex",
                 justifyContent: "flex-start",
             },

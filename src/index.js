@@ -35,7 +35,7 @@ const store = finalCreateStore(picrossApp, {
 const root = document.getElementById("root");
 
 render(
-    <div>
+    <div style={{display: "flex", height: "100vh"}}>
         <Provider store={store}>
             <App />
         </Provider>
