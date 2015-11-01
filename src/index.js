@@ -13,13 +13,23 @@ const { EMPTY } = CellStates;
 
 const finalCreateStore = compose(devTools())(createStore);
 
+function createEmptyGrid(rows, columns) {
+    const grid = [];
+    for (let i = 0; i < rows; i++) {
+        const row = [];
+        for (let j = 0; j < columns; j++) {
+            row.push(EMPTY);
+        }
+        grid.push(row);
+    }
+
+    return grid;
+}
+
 const store = finalCreateStore(picrossApp, {
-    columnLabels: [[], [2]],
-    rowLabels: [[1], [1]],
-    grid: [
-        [EMPTY, EMPTY,],
-        [EMPTY, EMPTY,],
-    ],
+    columnLabels: [[4], [], [1, 1, 1], [], [4]],
+    rowLabels: [[1], [1, 1], [1, 1, 1], [1, 1], [1, 1, 1]],
+    grid: createEmptyGrid(5, 5),
 });
 
 const root = document.getElementById("root");
