@@ -9,7 +9,7 @@ function grid(state = [], action) {
             // Change [i][j] of the state to `action.cellState`
             return [
                 ...state.slice(0, action.row),
-                ...[
+                [
                     ...state[action.row].slice(0, action.column),
                     action.cellState,
                     ...state[action.row].slice(action.column + 1),
