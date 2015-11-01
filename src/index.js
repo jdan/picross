@@ -1,14 +1,25 @@
 import React from "react";
 import { render } from "react-dom";
-import { App } from "./App";
+import { createStore } from "redux";
+import { Provider } from "react-redux";
 
-const examplePuzzle = {
+import App from "./App";
+import picrossApp from "./reducers";
+
+const store = createStore(picrossApp, {
     columnLabels: [[], [2]],
     rowLabels: [[1], [1]],
     grid: [
         [2, 1],
         [0, 0],
     ],
-};
+});
 
-render(<App puzzle={examplePuzzle} />, document.getElementById("root"));
+const root = document.getElementById("root");
+
+render(
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    root
+);

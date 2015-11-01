@@ -1,12 +1,16 @@
 import React, { PropTypes, Component } from "react";
+import { connect } from "react-redux";
 
 import { RowLabels, ColumnLabels } from "./Labels";
 import Grid from "./Grid";
 import { styleConstants, fontStyles } from "./style-constants";
 
 
-export class App extends Component {
+class App extends Component {
     render() {
+        // Injected by `connect`
+        const { dispatch, grid, columnLabels, rowLabels } = this.props;
+
         const styles = {
             row: {
                 display: "flex",
@@ -21,20 +25,21 @@ export class App extends Component {
         return <div>
             <div style={styles.row}>
                 <div style={styles.spacer} />
-                <ColumnLabels labels={this.props.puzzle.columnLabels} />
+                <ColumnLabels labels={columnLabels} />
             </div>
 
             <div style={styles.row}>
-                <RowLabels labels={this.props.puzzle.rowLabels} />
-                <Grid grid={this.props.puzzle.grid} />
+                <RowLabels labels={rowLabels} />
+                <Grid grid={grid} />
             </div>
         </div>;
     }
 }
 App.propTypes = {
-    puzzle: PropTypes.shape({
-        columnLabels: ColumnLabels.propTypes.labels.isRequired,
-        rowLabels: RowLabels.propTypes.labels.isRequired,
-        grid: Grid.propTypes.grid.isRequired,
-    }).isRequired,
+    columnLabels: ColumnLabels.propTypes.labels,
+    rowLabels: RowLabels.propTypes.labels,
+    grid: Grid.propTypes.grid,
 };
+
+// Connect the App component with the identity selector
+export default connect(x => x)(App);
